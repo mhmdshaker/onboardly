@@ -1,0 +1,94 @@
+[
+  {
+    "file": "workspace_code/processor.py",
+    "function_name": "clean_row",
+    "args": [
+      "row"
+    ],
+    "docstring": "Strip spaces & convert numeric fields.",
+    "code": "def clean_row(row):\n    \"\"\"Strip spaces & convert numeric fields.\"\"\"\n    return {k: (v.strip() if isinstance(v, str) else v) for k, v in row.items()}"
+  },
+  {
+    "file": "workspace_code/processor.py",
+    "function_name": "enrich_row",
+    "args": [
+      "row"
+    ],
+    "docstring": "Add squared value and flag.",
+    "code": "def enrich_row(row):\n    \"\"\"Add squared value and flag.\"\"\"\n    value = float(row.get('value', 0))\n    row['value_squared'] = square(value)\n    row['high'] = value > 50\n    return row"
+  },
+  {
+    "file": "workspace_code/processor.py",
+    "function_name": "process_rows",
+    "args": [
+      "rows"
+    ],
+    "docstring": null,
+    "code": "def process_rows(rows):\n    cleaned = [enrich_row(clean_row(r)) for r in rows]\n    log(f\"Processed {len(rows)} rows\")\n    return cleaned"
+  },
+  {
+    "file": "workspace_code/processor.py",
+    "function_name": "compute_stats",
+    "args": [
+      "rows"
+    ],
+    "docstring": null,
+    "code": "def compute_stats(rows):\n    vals = [float(r['value']) for r in rows]\n    return {'min': min(vals), 'max': max(vals), 'avg': mean(vals)}"
+  },
+  {
+    "file": "workspace_code/utils.py",
+    "function_name": "log",
+    "args": [
+      "message"
+    ],
+    "docstring": null,
+    "code": "def log(message: str) -> None:\n    ts = datetime.datetime.now().isoformat(timespec='seconds')\n    print(f\"[{ts}] {message}\")"
+  },
+  {
+    "file": "workspace_code/utils.py",
+    "function_name": "load_csv",
+    "args": [
+      "path"
+    ],
+    "docstring": null,
+    "code": "def load_csv(path: str):\n    log(f\"Loading CSV from {path}\")\n    with open(path, newline='') as f:\n        return list(csv.DictReader(f))"
+  },
+  {
+    "file": "workspace_code/utils.py",
+    "function_name": "save_json",
+    "args": [
+      "data",
+      "path"
+    ],
+    "docstring": null,
+    "code": "def save_json(data, path: str):\n    log(f\"Saving JSON to {path}\")\n    Path(path).parent.mkdir(exist_ok=True, parents=True)\n    with open(path, 'w') as fp:\n        json.dump(data, fp, indent=2)"
+  },
+  {
+    "file": "workspace_code/pipeline.py",
+    "function_name": "run",
+    "args": [
+      "input_csv",
+      "out_dir"
+    ],
+    "docstring": null,
+    "code": "def run(input_csv: str, out_dir: str = 'output') -> None:\n    raw = load_csv(input_csv)\n    rows = process_rows(raw)\n    stats = compute_stats(rows)\n\n    save_json(rows, f'{out_dir}/rows.json')\n    save_json(stats, f'{out_dir}/summary.json')\n    log(f\"Pipeline complete. Stats: {stats}\")"
+  },
+  {
+    "file": "workspace_code/math_ops.py",
+    "function_name": "square",
+    "args": [
+      "x"
+    ],
+    "docstring": null,
+    "code": "def square(x: float) -> float:\n    return x * x"
+  },
+  {
+    "file": "workspace_code/math_ops.py",
+    "function_name": "mean",
+    "args": [
+      "nums"
+    ],
+    "docstring": null,
+    "code": "def mean(nums):\n    return sum(nums) / len(nums) if nums else 0"
+  }
+]

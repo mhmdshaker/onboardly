@@ -1,0 +1,52 @@
+[
+  {
+    "index": 0,
+    "function_name": "clean_row",
+    "file": "workspace_code/processor.py"
+  },
+  {
+    "index": 1,
+    "function_name": "enrich_row",
+    "file": "workspace_code/processor.py"
+  },
+  {
+    "index": 2,
+    "function_name": "process_rows",
+    "file": "workspace_code/processor.py"
+  },
+  {
+    "index": 3,
+    "function_name": "compute_stats",
+    "file": "workspace_code/processor.py"
+  },
+  {
+    "index": 4,
+    "function_name": "log",
+    "file": "workspace_code/utils.py"
+  },
+  {
+    "index": 5,
+    "function_name": "load_csv",
+    "file": "workspace_code/utils.py"
+  },
+  {
+    "index": 6,
+    "function_name": "save_json",
+    "file": "workspace_code/utils.py"
+  },
+  {
+    "index": 7,
+    "function_name": "run",
+    "file": "workspace_code/pipeline.py"
+  },
+  {
+    "index": 8,
+    "function_name": "square",
+    "file": "workspace_code/math_ops.py"
+  },
+  {
+    "index": 9,
+    "function_name": "mean",
+    "file": "workspace_code/math_ops.py"
+  }
+]

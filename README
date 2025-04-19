@@ -1,0 +1,7 @@
+How to start the website
+
+Start Ollama from your mac open application
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+python3 app.py          # browse to http://127.0.0.1:5000

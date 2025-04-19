@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>CodeAnalyzer – Workspace</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js"></script>
+
+    <!-- main stylesheet -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+
+  <body class="app-shell">
+    <header class="topbar">
+      <span class="logo">&lt;/&gt; CodeAnalyzer</span>
+      <nav>
+        <a href="/">Home</a>
+      </nav>
+    </header>
+
+    <main class="grid">
+      <!-- ⬅︎ Column 1 ­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­-->
+      <section class="card left-col">
+        <!-- We already uploaded earlier – show a reminder -->
+        <p class="hint">
+          Your repository is loaded. You can re‑upload a new ZIP from the home
+          page.
+        </p>
+
+        <h3 class="walk-title">Code Walkthrough</h3>
+        <div class="walk-text">
+          <p>
+            <strong>Project goal.</strong> A bite‑size analytics pipeline that
+            shows <em>function‑level dependencies</em> across four modules.
+          </p>
+
+          <ul>
+            <li>
+              <code>pipeline.py</code> – <em>entry‑point</em>. Generates a dummy
+              CSV, then orchestrates the whole flow (<code>run()</code>).
+            </li>
+            <li>
+              <code>utils.py</code> – shared helpers (<code>log</code>,
+              <code>load_csv</code>, <code>save_json</code>).
+            </li>
+            <li>
+              <code>math_ops.py</code> – maths helpers (<code>square</code>,
+              <code>mean</code>).
+            </li>
+            <li>
+              <code>processor.py</code> – cleaning & feature‑engineering:
+              <code
+                >clean_row&nbsp;→&nbsp;enrich_row&nbsp;→&nbsp;process_rows</code
+              >; stats via <code>compute_stats</code>.
+            </li>
+          </ul>
+
+          <p><strong>Execution flow.</strong></p>
+          <ol>
+            <li>
+              <code>run()</code> loads data with <code>utils.load_csv</code>.
+            </li>
+            <li>
+              Sends rows to
+              <code>processor.process_rows</code> &nbsp;⇢&nbsp;<code
+                >clean_row</code
+              >
+              → <code>enrich_row</code>
+              (uses&nbsp;<code>math_ops.square</code>) and logs via
+              <code>utils.log</code>.
+            </li>
+            <li>
+              <code>processor.compute_stats</code> builds a summary, then
+              <code>utils.save_json</code> writes
+              <code>output/rows.json</code> &amp; <code>summary.json</code>.
+            </li>
+          </ol>
+
+          <p>
+            The diagram will show arrows such as <code>run → load_csv</code>,
+            <code>run → process_rows</code>, <code>enrich_row → square</code>,
+            <code>process_rows → log</code>.
+          </p>
+        </div>
+      </section>
+
+      <!-- ⬅︎ Column 2 ­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­-->
+      <section class="card centre-col">
+        <h2>Flowchart Visualization</h2>
+        <div id="network" class="diagram"></div>
+
+        <!-- details panel (fills in when you click a node) -->
+        <div id="details-pane" class="details hidden">
+          <h3 id="d-name"></h3>
+          <p><strong>Location</strong>: <span id="d-loc"></span></p>
+          <p><strong>Parameters</strong>: <span id="d-params"></span></p>
+          <p id="d-doc"></p>
+          <h4>Calls</h4>
+          <ul id="d-calls"></ul>
+        </div>
+      </section>
+
+      <!-- ⬅︎ Column 3 ­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­-->
+      <section class="card right-col">
+        <h2>Chatbot Assistance</h2>
+        <div id="chat-box" class="chat-box"></div>
+
+        <form id="chat-form" class="chat-form">
+          <input
+            id="question"
+            placeholder="Ask about the code…"
+            autocomplete="off"
+          />
+          <button type="submit">Send</button>
+        </form>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>
+        © {{ 2025 }} CodeAnalyzer • Need help? 
+        <a href="mailto:support@codeanalyzer.com">support@codeanalyzer.com</a>
+      </p>
+    </footer>
+
+    <!-- behaviour -->
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+  </body>
+</html>

@@ -1,0 +1,210 @@
+[
+  {
+    "name": "processor",
+    "path": "workspace_code/processor.py",
+    "functions": [
+      {
+        "name": "clean_row",
+        "qualified_name": "clean_row",
+        "class": null,
+        "params": [
+          "row"
+        ],
+        "docstring": "Strip spaces & convert numeric fields.",
+        "calls": [
+          "v.strip",
+          "isinstance",
+          "row.items"
+        ],
+        "line_number": 6,
+        "end_line": 8,
+        "parent": null,
+        "source": "def clean_row(row):\n    \"\"\"Strip spaces & convert numeric fields.\"\"\"\n    return {k: (v.strip() if isinstance(v, str) else v) for k, v in row.items()}\n"
+      },
+      {
+        "name": "enrich_row",
+        "qualified_name": "enrich_row",
+        "class": null,
+        "params": [
+          "row"
+        ],
+        "docstring": "Add squared value and flag.",
+        "calls": [
+          "row.get",
+          "float",
+          "square"
+        ],
+        "line_number": 10,
+        "end_line": 15,
+        "parent": null,
+        "source": "def enrich_row(row):\n    \"\"\"Add squared value and flag.\"\"\"\n    value = float(row.get('value', 0))\n    row['value_squared'] = square(value)\n    row['high'] = value > 50\n    return row\n"
+      },
+      {
+        "name": "process_rows",
+        "qualified_name": "process_rows",
+        "class": null,
+        "params": [
+          "rows"
+        ],
+        "docstring": null,
+        "calls": [
+          "clean_row",
+          "len",
+          "log",
+          "enrich_row"
+        ],
+        "line_number": 17,
+        "end_line": 20,
+        "parent": null,
+        "source": "def process_rows(rows):\n    cleaned = [enrich_row(clean_row(r)) for r in rows]\n    log(f\"Processed {len(rows)} rows\")\n    return cleaned\n"
+      },
+      {
+        "name": "compute_stats",
+        "qualified_name": "compute_stats",
+        "class": null,
+        "params": [
+          "rows"
+        ],
+        "docstring": null,
+        "calls": [
+          "min",
+          "mean",
+          "float",
+          "max"
+        ],
+        "line_number": 22,
+        "end_line": 24,
+        "parent": null,
+        "source": "def compute_stats(rows):\n    vals = [float(r['value']) for r in rows]\n    return {'min': min(vals), 'max': max(vals), 'avg': mean(vals)}\n"
+      }
+    ]
+  },
+  {
+    "name": "utils",
+    "path": "workspace_code/utils.py",
+    "functions": [
+      {
+        "name": "log",
+        "qualified_name": "log",
+        "class": null,
+        "params": [
+          "message"
+        ],
+        "docstring": null,
+        "calls": [
+          "isoformat",
+          "now",
+          "print"
+        ],
+        "line_number": 8,
+        "end_line": 10,
+        "parent": null,
+        "source": "def log(message: str) -> None:\n    ts = datetime.datetime.now().isoformat(timespec='seconds')\n    print(f\"[{ts}] {message}\")\n"
+      },
+      {
+        "name": "load_csv",
+        "qualified_name": "load_csv",
+        "class": null,
+        "params": [
+          "path"
+        ],
+        "docstring": null,
+        "calls": [
+          "list",
+          "csv.DictReader",
+          "open",
+          "log"
+        ],
+        "line_number": 12,
+        "end_line": 15,
+        "parent": null,
+        "source": "def load_csv(path: str):\n    log(f\"Loading CSV from {path}\")\n    with open(path, newline='') as f:\n        return list(csv.DictReader(f))\n"
+      },
+      {
+        "name": "save_json",
+        "qualified_name": "save_json",
+        "class": null,
+        "params": [
+          "data",
+          "path"
+        ],
+        "docstring": null,
+        "calls": [
+          "json.dump",
+          "open",
+          "log",
+          "Path",
+          "mkdir"
+        ],
+        "line_number": 17,
+        "end_line": 21,
+        "parent": null,
+        "source": "def save_json(data, path: str):\n    log(f\"Saving JSON to {path}\")\n    Path(path).parent.mkdir(exist_ok=True, parents=True)\n    with open(path, 'w') as fp:\n        json.dump(data, fp, indent=2)\n"
+      }
+    ]
+  },
+  {
+    "name": "pipeline",
+    "path": "workspace_code/pipeline.py",
+    "functions": [
+      {
+        "name": "run",
+        "qualified_name": "run",
+        "class": null,
+        "params": [
+          "input_csv",
+          "out_dir"
+        ],
+        "docstring": null,
+        "calls": [
+          "process_rows",
+          "load_csv",
+          "log",
+          "compute_stats",
+          "save_json"
+        ],
+        "line_number": 6,
+        "end_line": 13,
+        "parent": null,
+        "source": "def run(input_csv: str, out_dir: str = 'output') -> None:\n    raw = load_csv(input_csv)\n    rows = process_rows(raw)\n    stats = compute_stats(rows)\n\n    save_json(rows, f'{out_dir}/rows.json')\n    save_json(stats, f'{out_dir}/summary.json')\n    log(f\"Pipeline complete. Stats: {stats}\")\n"
+      }
+    ]
+  },
+  {
+    "name": "math_ops",
+    "path": "workspace_code/math_ops.py",
+    "functions": [
+      {
+        "name": "square",
+        "qualified_name": "square",
+        "class": null,
+        "params": [
+          "x"
+        ],
+        "docstring": null,
+        "calls": [],
+        "line_number": 3,
+        "end_line": 4,
+        "parent": null,
+        "source": "def square(x: float) -> float:\n    return x * x\n"
+      },
+      {
+        "name": "mean",
+        "qualified_name": "mean",
+        "class": null,
+        "params": [
+          "nums"
+        ],
+        "docstring": null,
+        "calls": [
+          "len",
+          "sum"
+        ],
+        "line_number": 6,
+        "end_line": 7,
+        "parent": null,
+        "source": "def mean(nums):\n    return sum(nums) / len(nums) if nums else 0\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,312 @@
+/* ---------- colour palette ---------- */
+:root {
+  --orange: #f47b47;
+  --orange-light: #fcded3;
+  --grey-100: #f8f9fa;
+  --grey-300: #dee2e6;
+  --grey-700: #495057;
+  --text: #212529;
+  --bg: #ffffff;
+  --radius: 12px;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ---------- layout helpers ---------- */
+body,
+html {
+  height: 100%;
+  margin: 0;
+  background: var(--grey-100);
+}
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 2rem;
+  background: var(--bg);
+  box-shadow: var(--shadow);
+}
+.topbar .logo {
+  font-weight: 700;
+  color: var(--orange);
+}
+.topbar nav a {
+  margin-left: 1.5rem;
+  text-decoration: none;
+  color: var(--grey-700);
+}
+.topbar nav a:hover {
+  color: var(--orange);
+}
+.grid {
+  flex: 1;
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 260px 1fr 340px;
+  padding: 1.5rem 2rem;
+}
+.card {
+  background: var(--bg);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+}
+.left-col h2,
+.centre-col h2,
+.right-col h2 {
+  margin-top: 0;
+}
+
+/* ---------- left column ---------- */
+.hint {
+  font-size: 0.875rem;
+  color: var(--grey-700);
+  line-height: 1.4;
+}
+.walk-title {
+  margin-top: 2rem;
+  font-size: 1.1rem;
+}
+.walk-text {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* ---------- centre column ---------- */
+.diagram {
+  flex: 1;
+  border: 1px solid var(--grey-300);
+  border-radius: var(--radius);
+}
+
+/* ---------- right column ---------- */
+.chat-box {
+  flex: 1;
+  overflow-y: auto;
+  border: 1px solid var(--grey-300);
+  border-radius: var(--radius);
+  padding: 0.75rem;
+  background: var(--grey-100);
+  font-family: Consolas, monospace;
+  font-size: 0.9rem;
+}
+.chat-box .user {
+  color: var(--orange);
+  margin-bottom: 0.4rem;
+}
+.chat-box .bot {
+  color: var(--grey-700);
+  margin-bottom: 0.9rem;
+}
+.chat-form {
+  display: flex;
+  margin-top: 1rem;
+}
+.chat-form input {
+  flex: 1;
+  border: 1px solid var(--grey-300);
+  border-radius: var(--radius);
+  padding: 0.55rem 0.75rem;
+  font-size: 0.95rem;
+}
+.chat-form button {
+  border: none;
+  background: var(--orange);
+  color: #fff;
+  margin-left: 0.75rem;
+  padding: 0.6rem 1.3rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+.chat-form button:hover {
+  opacity: 0.9;
+}
+
+/* ---------- footer ---------- */
+.footer {
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.85rem;
+  color: var(--grey-700);
+  border-top: 1px solid var(--grey-300);
+  background: var(--bg);
+}
+.footer a {
+  color: var(--orange);
+}
+
+/* ------------- existing palette & layout stay as‑is ------------- */
+
+/* ADD ► landing page */
+body.landing {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  background: var(--grey-100);
+}
+.hero {
+  width: min(480px, 90vw);
+  text-align: center;
+}
+.hero h1 {
+  margin-top: 0;
+  font-size: 1.9rem;
+}
+.tagline {
+  font-size: 1rem;
+  color: var(--grey-700);
+  line-height: 1.5;
+}
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+.upload-btn {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  display: inline-block;
+  border: 2px dashed var(--orange);
+  padding: 1.2rem;
+  border-radius: var(--radius);
+  color: var(--orange);
+  font-weight: 600;
+  transition: 0.2s;
+}
+.upload-btn:hover {
+  background: var(--orange-light);
+}
+.upload-btn input {
+  opacity: 0;
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+}
+.cta {
+  border: none;
+  background: var(--orange);
+  color: #fff;
+  padding: 0.8rem;
+  font-size: 1rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+.cta:hover {
+  opacity: 0.92;
+}
+.note {
+  font-size: 0.85rem;
+  color: var(--grey-700);
+}
+
+/* ADD ► stop workspace vertical growth */
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+} /* <- no global scroll */
+.grid {
+  height: calc(100% - 128px);
+} /* header (64) + footer (64) */
+.card {
+  min-height: 0;
+} /* allow cards to shrink */
+.diagram {
+  min-height: 0;
+  overflow: hidden;
+} /* keep vis canvas bounded */
+.chat-box {
+  min-height: 0;
+} /* same for chat panel */
+
+/* details panel under the diagram */
+.details {
+  margin-top: 1rem;
+  background: var(--grey-100);
+  border: 1px solid var(--grey-300);
+  border-radius: var(--radius);
+  padding: 1rem;
+  max-height: 180px;
+  overflow: auto;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+.details.hidden {
+  display: none;
+}
+.details h3 {
+  margin: 0.2rem 0 0.4rem 0;
+}
+.details ul {
+  margin: 0.3rem 0 0 1rem;
+  padding: 0;
+}
+.details li {
+  margin-left: 0.5rem;
+}
+
+.left-col {
+  overflow-y: auto;
+}
+.walk-text,
+.left-col li {
+  word-wrap: break-word;
+  white-space: normal;
+}
+
+/* === 1.  FLEX LAYOUT SO FOOTER ALWAYS SHOWS  ===================== */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+body.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+.topbar,
+.footer {
+  flex: 0 0 auto;
+} /* header + footer fixed */
+.grid {
+  flex: 1 1 auto; /* takes remaining space */
+  min-height: 0; /* <- allow it to shrink */
+  overflow: hidden;
+} /* no outer scroll      */
+
+/* === 2.  INTERNAL SCROLL AREAS  ================================= */
+.left-col,
+.right-col .chat-box {
+  overflow-y: auto;
+}
+.walk-text,
+.left-col li {
+  word-wrap: break-word;
+}
+
+/* === 3.  CHAT FORM ALIGNMENT  =================================== */
+.chat-form {
+  display: flex;
+  gap: 0.8rem;
+}
+.chat-form input {
+  flex: 1 1 auto;
+}
+.chat-form button {
+  flex: 0 0 auto;
+} /* button width stays natural */

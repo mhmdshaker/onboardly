@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>CodeAnalyzer – Upload</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="landing">
+
+  <section class="hero card">
+    <h1>Understand any codebase in minutes</h1>
+    <p class="tagline">
+      Upload a ZIP of Python files – we’ll parse it, draw a live flowchart and give
+      you an AI assistant that answers questions about the code.
+    </p>
+
+    <form action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data" class="upload-form">
+      <label class="upload-btn">
+        <input type="file" name="zipfile" accept=".zip" required>
+        <span>Choose ZIP file</span>
+      </label>
+
+      <button type="submit" class="cta">Analyze Code</button>
+    </form>
+
+    <p class="note">
+      <strong>Tip ·</strong> Push a repo to GitHub → <code>Code &gt; Download ZIP</code> – that file works here directly.
+    </p>
+  </section>
+
+  <footer class="footer landing-ft">
+    © {{ 2025 }} CodeAnalyzer • Need help?
+    <a href="mailto:support@codeanalyzer.com">support@codeanalyzer.com</a>
+  </footer>
+
+</body>
+</html>
