@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Diagram | CodeAnalyzer</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js"></script>
+  </head>
+  <body class="app-shell">
+    <!-- top navbar (inside body!) -->
+    {% include 'partials/topbar.html' %}
+
+    <!-- main content -->
+    <main class="single-col">
+      <section class="card">
+        <h1>Flowchart Visualization</h1>
+        <div class="diagram-container">
+          <div id="network" class="diagram"></div>
+
+          <!-- Move details panel outside and make it floating -->
+          <div id="details-pane" class="details hidden">
+            <h3 id="d-name"></h3>
+            <p><strong>Location</strong>: <span id="d-loc"></span></p>
+            <p><strong>Parameters</strong>: <span id="d-params"></span></p>
+            <p id="d-doc"></p>
+            <h4>Calls</h4>
+            <ul id="d-calls"></ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- footer (also inside body!) -->
+    {% include 'partials/footer.html' %}
+
+    <!-- your JS must come after the network container -->
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+  </body>
+</html>

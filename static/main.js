@@ -1,18 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const networkContainer = document.getElementById('network');
-  const chatBox = document.getElementById('chat-box');
-  const chatForm = document.getElementById('chat-form');
-  const input = document.getElementById('question');
+  const networkEl = document.getElementById('network');
+  if (networkEl) {
+    fetch('/diagram-data')
+      .then(r => r.json())
+      .then(buildDiagram)
+      .catch(err => console.error('Error fetching diagram data:', err));
+  }
 
-  // Build diagram
-  fetch('/diagram-data')
-    .then(r => r.json())
-    .then(buildDiagram)
-    .catch(err => console.error(err));
-
-  /* --------------  NEW buildDiagram  -------------- */
   function buildDiagram(modules) {
-    const nodeData = {}; // id → full function object
+    const nodeData = {};
     const nodes = [],
       edges = [];
 
@@ -20,19 +16,16 @@ document.addEventListener('DOMContentLoaded', () => {
       m.functions.forEach(f => {
         const id = f.qualified_name;
         nodeData[id] = f;
-
         nodes.push({
           id,
           label: f.name,
           shape: 'box',
-          title: `<b>${id}</b>`, // tooltip on hover
           color: {
             background: '#fff',
             border: '#495057',
             highlight: { background: '#e7f1ff', border: '#0d6efd' },
           },
         });
-
         (f.calls || []).forEach(c => {
           const target = nodes.find(n => n.id === c)
             ? c
@@ -52,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const network = new vis.Network(
-      document.getElementById('network'),
+      networkEl,
       { nodes: new vis.DataSet(nodes), edges: new vis.DataSet(edges) },
       {
         layout: { improvedLayout: true },
@@ -61,26 +54,42 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     );
 
-    /* ---- on click: fill the details pane ---- */
+    // grab once
+    const detailsPane = document.getElementById('details-pane');
+
+    // clicking outside hides
+    document.addEventListener('click', () =>
+      detailsPane.classList.add('hidden')
+    );
+
+    // clicking on nodes
     network.on('click', params => {
+      params.event.stopPropagation();
       if (!params.nodes.length) return;
-      const id = params.nodes[0];
-      const f = nodeData[id];
+      const id = params.nodes[0],
+        f = nodeData[id];
       if (!f) return;
 
-      const pane = document.getElementById('details-pane');
-      pane.classList.remove('hidden');
+      // position pane
+      const pos = network.canvasToDOM(network.getPositions([id])[id]);
+      detailsPane.style.left = `${pos.x + 20}px`;
+      detailsPane.style.top = `${pos.y - 20}px`;
+
+      // fill content
       document.getElementById('d-name').textContent = id;
       document.getElementById(
         'd-loc'
       ).textContent = `${f.module} (line ${f.line_number})`;
       document.getElementById('d-params').textContent =
-        f.params && f.params.length ? f.params.join(', ') : 'None';
-      document.getElementById('d-doc').textContent = f.docstring
-        ? f.docstring
-        : '—';
+        (f.params || []).join(', ') || 'None';
+      const docEl = document.getElementById('d-doc');
+      if (f.docstring) {
+        docEl.innerHTML = `<strong>Description:</strong> ${f.docstring}`;
+      } else {
+        docEl.textContent = 'No description available';
+      }
 
-      // populate call list
+      // calls list
       const ul = document.getElementById('d-calls');
       ul.innerHTML = '';
       (f.calls || []).forEach(c => {
@@ -88,31 +97,66 @@ document.addEventListener('DOMContentLoaded', () => {
         li.textContent = c;
         ul.appendChild(li);
       });
+
+      detailsPane.classList.remove('hidden');
     });
   }
 
-  // Chat
-  chatForm.addEventListener('submit', e => {
-    e.preventDefault();
-    const q = input.value.trim();
-    if (!q) return;
-    addMsg('user', q);
-    input.value = '';
-    fetch('/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ question: q }),
-    })
-      .then(r => r.json())
-      .then(d => addMsg('bot', d.answer))
-      .catch(err => addMsg('bot', '❌ ' + err));
-  });
+  // Chat functionality
+  const chatForm = document.getElementById('chat-form');
+  if (chatForm) {
+    const input =
+      document.getElementById('question') ||
+      document.getElementById('chat-input');
+    const chatBox = document.getElementById('chat-box');
 
-  function addMsg(role, text) {
-    const div = document.createElement('div');
-    div.className = role;
-    div.textContent = (role === 'user' ? '> ' : '') + text;
-    chatBox.appendChild(div);
-    chatBox.scrollTop = chatBox.scrollHeight;
+    // Define the addMsg function in this scope so it can be used by the event handler
+    function addMsg(role, text) {
+      const div = document.createElement('div');
+      div.className = role;
+      div.textContent = (role === 'user' ? '> ' : '') + text;
+      chatBox.appendChild(div);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    chatForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const q = input.value.trim();
+      if (!q) return;
+
+      addMsg('user', q);
+      addMsg('bot', '⏳ Thinking...'); // Add loading indicator
+
+      input.value = '';
+      fetch('/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: q }),
+      })
+        .then(r => {
+          if (!r.ok) throw new Error(`Server error: ${r.status}`);
+          return r.json();
+        })
+        .then(d => {
+          // Remove the loading message
+          chatBox.removeChild(chatBox.lastChild);
+
+          if (!d || !d.answer) {
+            throw new Error('No answer in response');
+          }
+          addMsg('bot', d.answer);
+        })
+        .catch(err => {
+          console.error('Chat error:', err);
+          // Remove the loading message if it exists
+          if (
+            chatBox.lastChild &&
+            chatBox.lastChild.textContent.includes('⏳')
+          ) {
+            chatBox.removeChild(chatBox.lastChild);
+          }
+          addMsg('bot', `❌ Error: ${err.message}`);
+        });
+    });
   }
 });

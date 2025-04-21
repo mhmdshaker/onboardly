@@ -1,7 +1,7 @@
 /* ---------- colour palette ---------- */
 :root {
-  --orange: #f47b47;
-  --orange-light: #fcded3;
+  --navy: #0d3b66; /* Changed from orange to navy */
+  --navy-light: #e6edf5; /* Changed from orange-light to navy-light */
   --grey-100: #f8f9fa;
   --grey-300: #dee2e6;
   --grey-700: #495057;
@@ -34,7 +34,7 @@ html {
 }
 .topbar .logo {
   font-weight: 700;
-  color: var(--orange);
+  color: var(--navy); /* Changed from orange to navy */
 }
 .topbar nav a {
   margin-left: 1.5rem;
@@ -42,7 +42,7 @@ html {
   color: var(--grey-700);
 }
 .topbar nav a:hover {
-  color: var(--orange);
+  color: var(--navy); /* Changed from orange to navy */
 }
 .grid {
   flex: 1;
@@ -82,9 +82,12 @@ html {
 
 /* ---------- centre column ---------- */
 .diagram {
-  flex: 1;
-  border: 1px solid var(--grey-300);
-  border-radius: var(--radius);
+  width: 100%;
+  height: 70vh; /* 70% of viewport height */
+  min-height: 500px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 20px;
 }
 
 /* ---------- right column ---------- */
@@ -93,41 +96,54 @@ html {
   overflow-y: auto;
   border: 1px solid var(--grey-300);
   border-radius: var(--radius);
-  padding: 0.75rem;
+  padding: 1rem; /* Increased padding */
   background: var(--grey-100);
   font-family: Consolas, monospace;
-  font-size: 0.9rem;
+  font-size: 1rem; /* Increased from 0.9rem */
+  min-height: 400px; /* Set minimum height */
+  margin-bottom: 1.2rem; /* Added space below */
 }
+
 .chat-box .user {
-  color: var(--orange);
-  margin-bottom: 0.4rem;
+  color: var(--navy);
+  margin-bottom: 0.8rem; /* Increased spacing */
+  font-size: 1.05rem; /* Larger font for messages */
+  padding: 0.5rem 0; /* Added padding around messages */
 }
+
 .chat-box .bot {
   color: var(--grey-700);
-  margin-bottom: 0.9rem;
+  margin-bottom: 1.2rem; /* Increased spacing */
+  font-size: 1.05rem; /* Larger font for messages */
+  padding: 0.5rem 0; /* Added padding around messages */
+  line-height: 1.5; /* Better readability */
 }
+
 .chat-form {
   display: flex;
-  margin-top: 1rem;
+  margin-top: 1.2rem; /* Slightly increased */
 }
+
 .chat-form input {
   flex: 1;
   border: 1px solid var(--grey-300);
   border-radius: var(--radius);
-  padding: 0.55rem 0.75rem;
-  font-size: 0.95rem;
+  padding: 0.7rem 1rem; /* Increased padding */
+  font-size: 1.05rem; /* Larger font */
+  height: 48px; /* Fixed height */
 }
+
 .chat-form button {
   border: none;
-  background: var(--orange);
+  background: var(--navy);
   color: #fff;
   margin-left: 0.75rem;
-  padding: 0.6rem 1.3rem;
+  padding: 0.7rem 1.5rem; /* Increased padding */
   border-radius: var(--radius);
   cursor: pointer;
-}
-.chat-form button:hover {
-  opacity: 0.9;
+  font-size: 1.05rem; /* Larger font */
+  font-weight: 500; /* Slightly bolder */
+  height: 48px; /* Match input height */
 }
 
 /* ---------- footer ---------- */
@@ -140,7 +156,7 @@ html {
   background: var(--bg);
 }
 .footer a {
-  color: var(--orange);
+  color: var(--navy); /* Changed from orange to navy */
 }
 
 /* ------------- existing palette & layout stay as‑is ------------- */
@@ -179,15 +195,15 @@ body.landing {
   overflow: hidden;
   cursor: pointer;
   display: inline-block;
-  border: 2px dashed var(--orange);
+  border: 2px dashed var(--navy); /* Changed from orange to navy */
   padding: 1.2rem;
   border-radius: var(--radius);
-  color: var(--orange);
+  color: var(--navy); /* Changed from orange to navy */
   font-weight: 600;
   transition: 0.2s;
 }
 .upload-btn:hover {
-  background: var(--orange-light);
+  background: var(--navy-light); /* Changed from orange-light to navy-light */
 }
 .upload-btn input {
   opacity: 0;
@@ -197,7 +213,7 @@ body.landing {
 }
 .cta {
   border: none;
-  background: var(--orange);
+  background: var(--navy); /* Changed from orange to navy */
   color: #fff;
   padding: 0.8rem;
   font-size: 1rem;
@@ -310,3 +326,78 @@ body.app-shell {
 .chat-form button {
   flex: 0 0 auto;
 } /* button width stays natural */
+
+.single-col {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+.single-col .card {
+  width: min(800px, 90vw); /* Increased from 600px */
+  margin: auto;
+}
+
+/* ensure full‑height flex layout */
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+/* make body a column flex container */
+body.app-shell {
+  display: flex;
+  flex-direction: column;
+}
+
+/* main takes all the “middle” space */
+.single-col {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+  overflow: auto; /* scroll if content is tall */
+}
+
+/* ensure the <section class="card"> doesn’t stretch the footer out */
+.single-col .card {
+  width: min(800px, 90vw); /* Increased from 600px */
+}
+
+/* footer sits at the bottom and doesn’t grow */
+footer.footer {
+  flex: 0 0 auto;
+}
+
+/* Add this to create a container for the diagram and floating box */
+.diagram-container {
+  position: relative;
+  width: 100%;
+  height: 70vh;
+}
+
+/* Change the details panel to be floating */
+.details-floating {
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+  z-index: 1000;
+  max-width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.details-floating h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: var(--navy);
+  border-bottom: 1px solid #eee;
+  padding-bottom: 5px;
+}
+
+.details-floating.hidden {
+  display: none;
+}

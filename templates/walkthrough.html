@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+      
+<head>
+  <meta charset="utf-8">
+  <title>Walkthrough | CodeAnalyzer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    /* Additional styles for livelier walkthrough */
+    .emoji-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    
+    .emoji-title h1 {
+      margin: 0;
+    }
+    
+    .code-pill {
+      background-color: #f1f8ff;
+      border: 1px solid #c8e1ff;
+      border-radius: 15px;
+      padding: 3px 8px;
+      font-family: monospace;
+      color: #0d3b66;
+      font-weight: 500;
+    }
+    
+    .module-card {
+      border-left: 4px solid #0d3b66;
+      padding-left: 12px;
+      margin-bottom: 8px;
+      background-color: #f9f9f9;
+      border-radius: 0 4px 4px 0;
+      padding: 8px 12px;
+    }
+    
+    .step-container {
+      border-left: 2px dashed #0d3b66;
+      padding-left: 20px;
+      margin-left: 10px;
+    }
+    
+    .step-container li {
+      margin-bottom: 12px;
+      position: relative;
+    }
+    
+    .step-container li::before {
+      content: "";
+      position: absolute;
+      left: -24px;
+      top: 6px;
+      width: 10px;
+      height: 10px;
+      background-color: #0d3b66;
+      border-radius: 50%;
+    }
+    
+    .highlight {
+      background-color: #fffde7;
+      padding: 2px;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body class="app-shell">
+
+  <!-- nav/header -->
+  {% include 'partials/topbar.html' %}
+
+  <!-- single‑column layout -->
+  <main class="single-col">
+    <section class="card">
+      <div class="emoji-title">
+        <h1>✨ Code Walkthrough</h1>
+        <span style="font-size: 24px;">🧭</span>
+      </div>
+
+      <p><strong>🎯 Project goal:</strong> A bite‑size analytics pipeline that
+         shows <em>function‑level dependencies</em> across four modules.</p>
+
+      <div style="margin: 20px 0;">
+        <p><strong>📚 Project Modules:</strong></p>
+        <ul style="list-style-type: none; padding-left: 5px;">
+          <li class="module-card">
+            <span style="font-size: 18px;">🚀</span> 
+            <code>pipeline.py</code> – <em>entry‑point</em>, orchestrates everything.
+          </li>
+          <li class="module-card">
+            <span style="font-size: 18px;">🔧</span> 
+            <code>utils.py</code> – helpers: <span class="code-pill">log</span>, <span class="code-pill">load_csv</span>, <span class="code-pill">save_json</span>.
+          </li>
+          <li class="module-card">
+            <span style="font-size: 18px;">🧮</span> 
+            <code>math_ops.py</code> – maths: <span class="code-pill">square</span>, <span class="code-pill">mean</span>.
+          </li>
+          <li class="module-card">
+            <span style="font-size: 18px;">⚙️</span> 
+            <code>processor.py</code> – clean & feature‑engineer: <span class="code-pill">clean_row → enrich_row → process_rows</span>; stats via <span class="code-pill">compute_stats</span>.
+          </li>
+        </ul>
+      </div>
+
+      <p><strong>🔄 Execution flow:</strong></p>
+      <div class="step-container">
+        <ol>
+          <li><span class="highlight"><code>run()</code></span> loads the CSV via <span class="highlight"><code>load_csv</code></span> 📂</li>
+          <li>Rows go through <span class="highlight"><code>process_rows</code></span> → <span class="highlight"><code>clean_row</code></span> → <span class="highlight"><code>enrich_row</code></span> (uses <span class="highlight"><code>square</code></span> & <span class="highlight"><code>log</code></span>) 🔄</li>
+          <li>Then <span class="highlight"><code>compute_stats</code></span> summarizes, and <span class="highlight"><code>save_json</code></span> writes the outputs 📊</li>
+        </ol>
+      </div>
+      
+      <div style="margin-top: 30px; padding: 15px; background-color: #edf8ff; border-radius: 8px; display: flex; align-items: center;">
+        <span style="font-size: 24px; margin-right: 10px;">💡</span>
+        <p style="margin: 0;">Explore the <strong>Diagram</strong> tab to visualize these connections and the <strong>Chat</strong> tab to ask questions about this code!</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- footer -->
+  {% include 'partials/footer.html' %}
+
+</body>
+</html>

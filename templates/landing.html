@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Onboardly</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background-color: #ffffff; /* Changed to white */
+        margin: 0;
+        font-family: 'Segoe UI', Roboto, sans-serif;
+      }
+
+      .welcome-container {
+        text-align: center;
+        max-width: 500px;
+        padding: 20px;
+      }
+
+      .title {
+        font-size: 52px;
+        font-weight: bold;
+        margin-bottom: 30px;
+        color: #212529;
+      }
+
+      .welcome-content {
+        display: flex;
+        align-items: center;
+        margin-bottom: 40px;
+      }
+
+      .robot {
+        width: 100px;
+        height: 100px;
+        background-color: #0d6efd;
+        border-radius: 50%;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 8px solid #90c2ff;
+      }
+
+      .robot-face {
+        position: relative;
+        width: 60%;
+        height: 60%;
+      }
+
+      .robot-eye {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background-color: #000;
+        border-radius: 50%;
+      }
+
+      .robot-eye.left {
+        left: 15px;
+        top: 20px;
+      }
+
+      .robot-eye.right {
+        right: 15px;
+        top: 20px;
+      }
+
+      .robot-mouth {
+        position: absolute;
+        width: 30px;
+        height: 10px;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        background-color: #000;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .robot-headphones {
+        position: absolute;
+        width: 120%;
+        height: 30px;
+        background: transparent;
+      }
+
+      .robot-headphones:before,
+      .robot-headphones:after {
+        content: '';
+        position: absolute;
+        width: 15px;
+        height: 30px;
+        background-color: #0d6efd;
+        border: 4px solid #90c2ff;
+        border-radius: 8px;
+      }
+
+      .robot-headphones:before {
+        left: -18px;
+      }
+
+      .robot-headphones:after {
+        right: -18px;
+      }
+
+      .speech-bubble {
+        position: relative;
+        background: #ffffff;
+        border-radius: 15px;
+        padding: 20px;
+        margin-left: 30px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        max-width: 250px;
+      }
+
+      .speech-bubble:before {
+        content: '';
+        position: absolute;
+        left: -15px;
+        top: 50%;
+        transform: translateY(-50%);
+        border-width: 10px 15px 10px 0;
+        border-style: solid;
+        border-color: transparent #ffffff transparent transparent;
+      }
+
+      .get-started-btn {
+        background-color: #0d6efd;
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+        padding: 15px 40px;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        text-decoration: none;
+        display: inline-block;
+      }
+
+      .get-started-btn:hover {
+        background-color: #0b5ed7;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="welcome-container">
+      <div class="title">Onboardly</div>
+
+      <div class="welcome-content">
+        <div class="robot">
+          <div class="robot-headphones"></div>
+          <div class="robot-face">
+            <div class="robot-eye left"></div>
+            <div class="robot-eye right"></div>
+            <div class="robot-mouth"></div>
+          </div>
+        </div>
+
+        <div class="speech-bubble">
+          <p>Welcome! Let's start your onboarding. Understand any codebase in minutes</p>
+        </div>
+      </div>
+
+      <a href="{{ url_for('index') }}" class="get-started-btn">Get Started</a>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,33 @@
+<!doctype html>
+
+
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Chatbot | CodeAnalyzer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="app-shell">
+
+  <!-- nav/header -->
+  {% include 'partials/topbar.html' %}
+
+  <main class="single-col">
+    <section class="card">
+      <h1>Chatbot Assistance</h1>
+      <div id="chat-box" class="chat-box"></div>
+
+      <form id="chat-form" class="chat-form">
+        <input id="question" placeholder="Ask about the code…" autocomplete="off">
+        <button type="submit">Send</button>
+      </form>
+    </section>
+  </main>
+
+  <!-- footer -->
+  {% include 'partials/footer.html' %}
+
+  <script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+</html>

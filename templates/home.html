@@ -1,0 +1,58 @@
+<!doctype html>
+<header class="topbar">
+    <span class="logo">&lt;/&gt; CodeAnalyzer</span>
+    <nav>
+      <a href="{{ url_for('index') }}">Home</a>
+      <a href="{{ url_for('walkthrough') }}">Walkthrough</a>
+      <a href="{{ url_for('diagram') }}">Diagram</a>
+      <a href="{{ url_for('chatbot') }}">Chatbot</a>
+    </nav>
+  </header>
+  <footer class="footer">
+    © 2025 CodeAnalyzer • Need help?
+    <a href="mailto:support@codeanalyzer.com">support@codeanalyzer.com</a>
+  </footer>
+  
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>CodeAnalyzer – Home</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="landing">
+  <header class="topbar">
+    <span class="logo">&lt;/&gt; CodeAnalyzer</span>
+    <nav>
+      <a href="{{ url_for('home') }}">Home</a>
+      <a href="{{ url_for('walkthrough') }}">Walkthrough</a>
+      <a href="{{ url_for('diagram') }}">Flowchart</a>
+      <a href="{{ url_for('chat_ui') }}">Chat</a>
+    </nav>
+  </header>
+
+  <section class="hero card">
+    <h1>Understand any codebase in minutes</h1>
+    <p class="tagline">
+      Upload a ZIP of Python files – we’ll parse it, draw a dynamic flowchart,
+      and spin up an AI‐powered assistant at your fingertips.
+    </p>
+
+    <form action="{{ url_for('home') }}" method="post" enctype="multipart/form-data" class="upload-form">
+      <label class="upload-btn">
+        <input type="file" name="zipfile" accept=".zip" required>
+        <span>Choose ZIP file</span>
+      </label>
+      <button type="submit" class="cta">Analyze Code</button>
+    </form>
+
+    <p class="note">
+      Tip: If you’re on GitHub, click “Code → Download ZIP” to get a ready‑to‑upload archive.
+    </p>
+  </section>
+
+  <footer class="footer landing-ft">
+    © 2025 CodeAnalyzer • support@codeanalyzer.com
+  </footer>
+</body>
+</html>
